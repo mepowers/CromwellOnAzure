@@ -48,7 +48,7 @@ task FastqToUbam {
     Int disk_size = ceil(size(fastqs[0], "GB") + size(fastqs[1], "GB")) * 3 
 
     command {
-        java  -jar ${gotc_path}picard.jar FastqToSam \
+        java -d64 -Xmx30G -jar ${gotc_path}picard.jar FastqToSam \
             FASTQ=${fastqs[0]} \
             FASTQ2=${fastqs[1]} \
             OUTPUT=${output_bam_basename}.bam \
@@ -56,14 +56,14 @@ task FastqToUbam {
             SAMPLE_NAME=${sample} \
             LIBRARY_NAME=${library} \
             PLATFORM_UNIT=${platform_unit} \
-            PLATFORM=${platform}
+            PLATFORM=${platform} \
+            TMP_DIR=/dev/sdb1
     }
 
     runtime {
         docker: docker_image
         memory: "32 GB"
-        cpu: "16"
-        disk: disk_size + " GB"
+        cpu: "2"
     }
 
     output {
