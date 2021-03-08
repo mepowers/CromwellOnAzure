@@ -25,3 +25,8 @@ container = database.get_container_client(container_name)
 result = container.scripts.execute_stored_procedure(sproc=stored_procedure, partition_key='01') 
 
 print(result)
+
+# Write to CSV
+with open('some.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(result)
